@@ -19,7 +19,8 @@ The objective of this project is the molecular diagnosis of rare Mendelian genet
 * **Data Location:** `/home/BCG2025_genomics_exam`
 
 ## 3. MATERIALS AND METHODS
-*Questa sezione verrà aggiornata con i comandi e la pipeline passo dopo passo.*
+**Step 1: Quality Control**
+Raw sequencing reads (FASTQ format) for the 5 family trios were assessed for quality using `FastQC`. The individual reports were subsequently aggregated into a single comprehensive report using `MultiQC` to evaluate global sequencing metrics such as Phred quality scores, GC content, and sequence duplication levels.
 
 ## 4. RESULTS
 *Qui inseriremo le tabelle dei casi, i grafici MultiQC e la visualizzazione UCSC/IGV.*
