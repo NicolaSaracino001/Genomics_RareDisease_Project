@@ -22,6 +22,9 @@ The objective of this project is the molecular diagnosis of rare Mendelian genet
 **Step 1: Quality Control**
 Raw sequencing reads (FASTQ format) for the 5 family trios were assessed for quality using `FastQC`. The individual reports were subsequently aggregated into a single comprehensive report using `MultiQC` to evaluate global sequencing metrics such as Phred quality scores, GC content, and sequence duplication levels.
 
+**Step 2: Read Alignment and Processing**
+High-quality reads were aligned to the human reference genome assembly hg19 (specifically chromosome 16) using `Bowtie2`. Read groups were explicitly assigned to distinguish maternal, paternal, and proband sequences. The resulting SAM files were directly piped into `Samtools` to convert them into compressed BAM format, sorted by genomic coordinates, and indexed for efficient downstream variant calling and visualization.
+
 ## 4. RESULTS
 *Qui inseriremo le tabelle dei casi, i grafici MultiQC e la visualizzazione UCSC/IGV.*
 
