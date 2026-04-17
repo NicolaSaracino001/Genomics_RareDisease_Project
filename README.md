@@ -25,6 +25,12 @@ Raw sequencing reads (FASTQ format) for the 5 family trios were assessed for qua
 **Step 2: Read Alignment and Processing**
 High-quality reads were aligned to the human reference genome assembly hg19 (specifically chromosome 16) using `Bowtie2`. Read groups were explicitly assigned to distinguish maternal, paternal, and proband sequences. The resulting SAM files were directly piped into `Samtools` to convert them into compressed BAM format, sorted by genomic coordinates, and indexed for efficient downstream variant calling and visualization.
 
+**Step 3: Coverage Analysis**
+Post-alignment quality control was performed using `Qualimap` (bamqc mode) to compute target region coverage, relying on the provided BED file. The alignment metrics were subsequently integrated into the global `MultiQC` report to verify that minimum coverage thresholds (e.g., ≥5X, ≥10X) were met across all samples.
+
+**Step 4: Variant Calling**
+Single Nucleotide Polymorphisms (SNPs) and small Insertions/Deletions (InDels) were identified using `Freebayes`. A joint calling approach was applied for each family trio to simultaneously evaluate the proband and parental alignments, thereby improving variant detection accuracy and facilitating downstream Mendelian inheritance filtering. The output was generated in Variant Call Format (VCF).
+
 ## 4. RESULTS
 *Qui inseriremo le tabelle dei casi, i grafici MultiQC e la visualizzazione UCSC/IGV.*
 
