@@ -31,6 +31,9 @@ Post-alignment quality control was performed using `Qualimap` (bamqc mode) to co
 **Step 4: Variant Calling**
 Single Nucleotide Polymorphisms (SNPs) and small Insertions/Deletions (InDels) were identified using `Freebayes`. A joint calling approach was applied for each family trio to simultaneously evaluate the proband and parental alignments, thereby improving variant detection accuracy and facilitating downstream Mendelian inheritance filtering. The output was generated in Variant Call Format (VCF).
 
+**Step 5: Variant Filtering**
+Variants were rigorously filtered based on the specific Mendelian inheritance patterns of each family using `bcftools`. For the autosomal recessive case, variants were retained if the proband was homozygous for the alternate allele and both parents were heterozygous carriers. For autosomal dominant cases, variants were retained if the proband was heterozygous and at most one parent was affected (accommodating both inherited and *de novo* events). A stringent baseline quality filter (QUAL > 20) was subsequently applied to remove low-confidence calls and sequencing artifacts.
+
 ## 4. RESULTS
 *Qui inseriremo le tabelle dei casi, i grafici MultiQC e la visualizzazione UCSC/IGV.*
 
