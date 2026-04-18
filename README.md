@@ -34,8 +34,17 @@ Single Nucleotide Polymorphisms (SNPs) and small Insertions/Deletions (InDels) w
 **Step 5: Variant Filtering**
 Variants were rigorously filtered based on the specific Mendelian inheritance patterns of each family using `bcftools`. For the autosomal recessive case, variants were retained if the proband was homozygous for the alternate allele and both parents were heterozygous carriers. For autosomal dominant cases, variants were retained if the proband was heterozygous and at most one parent was affected (accommodating both inherited and *de novo* events). A stringent baseline quality filter (QUAL > 20) was subsequently applied to remove low-confidence calls and sequencing artifacts.
 
-**Step 6: Variant Annotation (VEP Web Interface)**
-Variant annotation was performed using the Ensembl VEP Web Interface for the **GRCh37** assembly. The analysis focused specifically on **Chromosome 16**. To ensure clinical accuracy, RefSeq transcripts were used. Population frequency filtering was applied using 1000 Genomes and gnomAD (exomes). Pathogenicity data were integrated via DisGeNet and clinical association plugins. Results were filtered for **HIGH impact** variants to identify causative mutations.
+**Step 6: Variant Annotation (Ensembl VEP Web Interface)**
+Variant functional annotation was performed using the **Ensembl VEP** web interface, specifically utilizing the dedicated **GRCh37 (hg19)** assembly portal to ensure perfect genomic coordinate matching with the generated VCF files. The analysis was strictly focused on **Chromosome 16**.
+
+To maximize the clinical relevance of the research, the following parameters and filters were applied:
+* **Transcript Database:** **RefSeq** transcripts were used to ensure high-quality, manually curated annotations.
+* **Population Frequency Filters:** Common variants were excluded using the **1000 Genomes** (global MAF) and **gnomAD** (exomes) databases.
+* **Pathogenicity and Phenotype Data:** Clinical association plugins (e.g., ClinVar, OMIM) were integrated. 
+  * *Technical note: The DisGeNet plugin was omitted as it is currently deprecated/unsupported on the Ensembl web platform for the GRCh37 build.*
+* **Functional Impact Filter:** Strict filtering for variants with **IMPACT: HIGH** (e.g., frameshifts, stop-gains, canonical splice sites) was applied to isolate the mutations with the highest probability of being disease-causing.
+
+Results were exported in tabular format for subsequent bioinformatics analysis and clinical interpretation.
 
 ## 4. RESULTS
 *Qui inseriremo le tabelle dei casi, i grafici MultiQC e la visualizzazione UCSC/IGV.*
