@@ -34,6 +34,9 @@ Single Nucleotide Polymorphisms (SNPs) and small Insertions/Deletions (InDels) w
 **Step 5: Variant Filtering**
 Variants were rigorously filtered based on the specific Mendelian inheritance patterns of each family using `bcftools`. For the autosomal recessive case, variants were retained if the proband was homozygous for the alternate allele and both parents were heterozygous carriers. For autosomal dominant cases, variants were retained if the proband was heterozygous and at most one parent was affected (accommodating both inherited and *de novo* events). A stringent baseline quality filter (QUAL > 20) was subsequently applied to remove low-confidence calls and sequencing artifacts.
 
+**Step 6: Variant Annotation (VEP Web Interface)**
+Variant annotation was performed using the Ensembl VEP Web Interface for the **GRCh37** assembly. The analysis focused specifically on **Chromosome 16**. To ensure clinical accuracy, RefSeq transcripts were used. Population frequency filtering was applied using 1000 Genomes and gnomAD (exomes). Pathogenicity data were integrated via DisGeNet and clinical association plugins. Results were filtered for **HIGH impact** variants to identify causative mutations.
+
 ## 4. RESULTS
 *Qui inseriremo le tabelle dei casi, i grafici MultiQC e la visualizzazione UCSC/IGV.*
 

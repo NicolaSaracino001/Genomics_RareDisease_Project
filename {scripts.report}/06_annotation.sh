@@ -1,15 +1,14 @@
 #!/bin/bash
 # FASE 6: Annotazione funzionale delle varianti
-# Utilizzo della cache offline condivisa dal docente per bypassare i blocchi di rete
-
-VCF_DIR="$HOME/Genomics_Project/03_VariantCalling"
-ANN_DIR="$HOME/Genomics_Project/04_Annotation"
-
-mkdir -p ${ANN_DIR}
-cd ${VCF_DIR}
-
-for case in 610 683 657 586 681; do
-    vep -i case${case}_final.vcf \
-        -o ${ANN_DIR}/case${case}_annotated.txt \
-        --tab --symbol --hgvs --canonical --offline --dir_cache /home/mchiara/.vep --force_overwrite
-done
+# METODO: Interfaccia Web Ensembl VEP (Genoma di Riferimento: GRCh37/hg19)
+# LINK: https://grch37.ensembl.org/Homo_sapiens/Tools/VEP
+#
+# Parametri utilizzati per l'analisi:
+# - Genoma: GRCh37
+# - Regione d'interesse: CROMOSOMA 16
+# - Transcript database: RefSeq transcripts
+# - Frequency data: 1000 Genomes (global MAF) & gnomAD (exomes)
+# - Phenotypes & literature: Variants already associated to disease & DisGeNet
+# - Filtering options: Restrict results -> IMPACT is HIGH
+#
+# I file VCF del cromosoma 16 sono stati scaricati in locale per l'analisi web.
