@@ -1,7 +1,10 @@
-# Molecular Diagnosis of Rare Genetic Disorders
+# Clinical Bioinformatics: Trio Analysis for Rare Disease Diagnosis
 
 ## 1. ABSTRACT
-(Da compilare alla fine del progetto con un riassunto dei risultati).
+This repository documents the complete bioinformatics pipeline and clinical analysis conducted on 5 family trios (father, mother, child). 
+The primary objective of this project is to identify and isolate pathogenic genetic variants responsible for rare Mendelian disorders using genomic sequencing data.
+
+The analysis evaluated two distinct Mendelian inheritance models: **Autosomal Recessive (AR)** and **Autosomal Dominant (AD)**, with a specific focus on identifying *de novo* mutations for the latter (variants arising spontaneously in the child that are completely absent in both parents).
 
 ## 2. INTRODUCTION
 The objective of this project is the molecular diagnosis of rare Mendelian genetic disorders in 5 distinct family trios using whole-exome sequencing (WES) data. The analysis focuses on chromosome 16 (assembly hg19).
@@ -32,17 +35,20 @@ Post-alignment quality control was performed using `Qualimap` (bamqc mode) to co
 Single Nucleotide Polymorphisms (SNPs) and small Insertions/Deletions (InDels) were identified using `Freebayes`. To optimize computational efficiency and restrict the analysis strictly to the regions of interest (WES approach), variant calling and coverage analyses were limited to the exonic regions of chromosome 16. This was achieved by providing a target BED file (`exons16Padded_sorted.bed`), previously processed and formatted using `bedtools`. A joint calling approach was applied for each family trio to simultaneously evaluate the proband and parental alignments, improving variant detection accuracy. The output was generated in Variant Call Format (VCF).
 
 **Step 5: Variant Filtering**
-Variants were rigorously filtered based on the specific Mendelian inheritance patterns of each family using `bcftools`. For the autosomal recessive case, variants were retained if the proband was homozygous for the alternate allele and both parents were heterozygous carriers. For autosomal dominant cases, variants were retained if the proband was heterozygous and at most one parent was affected (accommodating both inherited and *de novo* events). A stringent baseline quality filter (QUAL > 20) was subsequently applied to remove low-confidence calls and sequencing artifacts.
+Variants were rigorously filtered based on the specific Mendelian inheritance patterns of each family using `bcftools`. A stringent baseline quality filter (`QUAL > 20`) was applied to remove low-confidence calls and sequencing artifacts. 
+* **Autosomal Recessive (AR):** For Case 610, variants were retained if the proband was homozygous for the alternate allele (`1/1`) and both parents were heterozygous carriers (`0/1`). 
+  * *Command applied:* `bcftools view -i 'QUAL>20 && FORMAT/GT[0]="1/1" && FORMAT/GT[1]="0/1" && FORMAT/GT[2]="0/1"'`
+* **Autosomal Dominant (AD) / *De novo*:** For Cases 586, 657, 681, and 683, the analysis targeted *de novo* mutations. Variants were retained if the proband was heterozygous (`0/1`) and both parents were homozygous for the reference allele (`0/0`).
+  * *Command applied:* `bcftools view -i 'QUAL>20 && FORMAT/GT[0]="0/1" && FORMAT/GT[1]="0/0" && FORMAT/GT[2]="0/0"'`
 
 **Step 6: Variant Annotation (Ensembl VEP Web Interface)**
 Variant functional annotation was performed using the **Ensembl VEP** web interface, specifically utilizing the dedicated **GRCh37 (hg19)** assembly portal to ensure perfect genomic coordinate matching with the generated VCF files. The analysis was strictly focused on **Chromosome 16**.
 
-To maximize the clinical relevance of the research, the following parameters and filters were applied:
-* **Transcript Database:** **RefSeq** transcripts were used to ensure high-quality, manually curated annotations.
-* **Population Frequency Filters:** Common variants were excluded using the **1000 Genomes** (global MAF) and **gnomAD** (exomes) databases.
-* **Pathogenicity and Phenotype Data:** Clinical association plugins (e.g., ClinVar, OMIM) were integrated. 
-  * *Technical note: The DisGeNet plugin was omitted as it is currently deprecated/unsupported on the Ensembl web platform for the GRCh37 build.*
-* **Functional Impact Filter:** Strict filtering for variants with **IMPACT: HIGH** (e.g., frameshifts, stop-gains, canonical splice sites) was applied to isolate the mutations with the highest probability of being disease-causing.
+To identify the causal mutation among the candidates, a multi-stage filtering strategy was applied based on the following criteria:
+1. **Impact and Consequence Filter:** Priority was given to variants with **IMPACT: HIGH** (e.g., stop_gained, frameshift_variant). Variants with **IMERATE (Moderate)** impact (e.g., missense_variant) were only considered if no high-impact candidates were identified within the inheritance model.
+2. **Population Frequency Filter (gnomAD):** Only rare variants were retained. Candidates were required to have a near-zero allele frequency in the **gnomAD** database or be completely absent (novel variants marked with `-`). High-frequency variants or known population polymorphisms (e.g., *IL34* variants with AF > 10%) were discarded as non-pathogenic.
+3. **Clinical Significance (CLIN_SIG):** Variants were filtered using the `CLIN_SIG` column to identify those already reported as **Pathogenic** or **Likely Pathogenic** in clinical databases like ClinVar.
+4. **Phenotype Correlation:** The surviving variants were cross-referenced with the **Phenotypes** column. A variant was only confirmed as the diagnostic cause if the mutated gene was explicitly associated with a known clinical condition (e.g., *CREBBP* with Rubinstein-Taybi syndrome). Conversely, *de novo* mutations in genes with no clinical phenotype association (e.g., *TMC5*, *PRSS41*) were classified as benign/innocent events.
 
 Results were exported in tabular format for subsequent bioinformatics analysis and clinical interpretation.
 
