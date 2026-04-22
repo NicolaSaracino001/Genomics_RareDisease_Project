@@ -53,7 +53,34 @@ To identify the causal mutation among the candidates, a multi-stage filtering st
 Results were exported in tabular format for subsequent bioinformatics analysis and clinical interpretation.
 
 ## 4. RESULTS
-*Qui inseriremo le tabelle dei casi, i grafici MultiQC e la visualizzazione UCSC/IGV.*
+The clinical bioinformatics pipeline successfully processed and filtered the genomic data for the 5 family trios. The final diagnostic outcomes are summarized in the table below, followed by detailed clinical reports for each individual case.
+
+### 4.1 Summary of Findings
+
+| Case ID | Inheritance Model | Mutated Gene | Variant Location | Consequence | Clinical Phenotype | Final Diagnosis |
+|---------|-------------------|--------------|------------------|-------------|--------------------|-----------------|
+| **610** | Autosomal Recessive | - | - | - | - | **Healthy** (No pathogenic AR variants) |
+| **586** | Autosomal Dominant | *TMC5* | 16:19451558-19451563 | Frameshift | None (-) | **Healthy** (Benign *de novo* variant) |
+| **657** | Autosomal Dominant | *CYLD* | 16:50788249-50788254 | Frameshift | Familial Cylindromatosis | **Familial Cylindromatosis** |
+| **681** | Autosomal Dominant | *CREBBP* | 16:3820696 | Stop Gained | Rubinstein-Taybi Syndrome | **Rubinstein-Taybi Syndrome** |
+| **683** | Autosomal Dominant | *PRSS41* | - | - | None (-) | **Healthy** (Benign *de novo* variant) |
+
+### 4.2 Detailed Clinical Reports
+
+**Case 610**
+Case 610 was determined not to be associated with any genetic disease. Following the Autosomal Recessive (AR) filtering model (proband 1/1, parents 0/1), no variants passed the stringent clinical criteria regarding population frequency, functional impact, and known pathological phenotypes. The patient is considered clinically healthy.
+
+**Case 586**
+Case 586 was determined not to be associated with any disease. The genetic analysis of the child revealed a *de novo* frameshift variant in the *TMC5* gene (16:19451558-19451563, G deletion). While this variant displayed potentially pathogenic characteristics—such as a high impact on the protein structure and a completely novel frequency in the population databases—the absence of any associated phenotype in the clinical databases excludes it from being classified as pathogenic. The patient is clinically healthy.
+
+**Case 657**
+Case 657 was determined to be associated with Familial Cylindromatosis. The genetic analysis of the child revealed a pathogenic *de novo* frameshift variant in the *CYLD* gene (16:50788249-50788254, GATG deletion). This variant presents highly pathogenic characteristics: it has a severe impact on the protein structure and is completely novel, as indicated by its absence in population databases (gnomAD). Furthermore, clinical databases explicitly associate the disruption of the *CYLD* gene with Familial Cylindromatosis. 
+
+**Case 681**
+Case 681 was determined to be associated with Rubinstein-Taybi syndrome. The genetic analysis of the child identified a *de novo* nonsense variant (*stop_gained*) in the *CREBBP* gene (16:3820696, G>A substitution). This variant is characterized by a high impact on the protein, leading to a premature stop codon. Furthermore, it is absent from population databases (gnomAD) and is explicitly annotated as pathogenic in clinical databases (ClinVar). The severe disruption of the *CREBBP* gene is a well-established cause of Rubinstein-Taybi syndrome.
+
+**Case 683**
+Case 683 was determined not to be associated with any genetic disease. The analysis of the trio identified a *de novo* variant in the *PRSS41* gene. However, a review of clinical databases revealed an absence of any known phenotype or disease association for this gene. Additional variants detected in genes like *IL34* and *TMC5* were discarded as systematic sequencing artifacts and high-frequency benign polymorphisms. The patient is clinically healthy.
 
 ## 5. DISCUSSION
 *Commenti sui risultati di VEP, insight biologici e considerazioni tecniche.*
