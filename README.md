@@ -140,7 +140,7 @@ The visualization was scaled to a ~200 bp genomic window (`chr16:3,820,600-3,820
 
 Furthermore, the visualization confirms that the substitution falls within a highly conserved coding exon, as demonstrated by the multiz alignments of vertebrate species.
 
-![UCSC Coverage Case 681](UCSC_Coverage_Case681.png)
+![UCSC Coverage Case 681](UCSC_Coverage_681.png)
 
 
 
@@ -161,3 +161,5 @@ This project successfully achieved its objective of performing molecular diagnos
 1. McLaren, W., et al. (2016). The Ensembl Variant Effect Predictor. *Genome Biology*, 17(1), 122.
 2. Karczewski, K. J., et al. (2020). The mutational constraint spectrum quantified from variation in 141,456 humans. *Nature*, 581(7809), 434-443.
 3. Landrum, M. J., et al. (2018). ClinVar: improving access to variant interpretations and supporting evidence. *Nucleic Acids Research*, 46(D1), D1062-D1067.
+
+[def]: UCSC_Coverage_681.png
