@@ -56,15 +56,23 @@ Results were exported in tabular format for subsequent bioinformatics analysis a
 This section details the exact commands executed in the server environment to ensure the reproducibility of the analysis.
 
 ### 4.1 Read Mapping and Processing (Bowtie2 & Samtools)
-For each sample, reads were aligned and converted to sorted BAM files:
-```bash
-# Alignment and SAM to BAM conversion
-bowtie2 -x hg19_index -1 child_R1.fastq -2 child_R2.fastq | samtools view -bS - > child.bam
+Reads for the proband, father, and mother were individually aligned and converted to sorted BAM files:
 
-# Sorting and Indexing
+```bash
+# 1. Child (Proband) Processing
+bowtie2 -x hg19_index -1 child_R1.fastq -2 child_R2.fastq | samtools view -bS - > child.bam
 samtools sort child.bam -o child_sorted.bam
 samtools index child_sorted.bam
-```
+
+# 2. Father Processing
+bowtie2 -x hg19_index -1 father_R1.fastq -2 father_R2.fastq | samtools view -bS - > father.bam
+samtools sort father.bam -o father_sorted.bam
+samtools index father_sorted.bam
+
+# 3. Mother Processing
+bowtie2 -x hg19_index -1 mother_R1.fastq -2 mother_R2.fastq | samtools view -bS - > mother.bam
+samtools sort mother.bam -o mother_sorted.bam
+samtools index mother_sorted.bam
 
 ### 4.2 Variant Calling (Freebayes)
 Joint variant calling was performed for each family trio within the target regions:
