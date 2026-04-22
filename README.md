@@ -142,6 +142,33 @@ Furthermore, the visualization confirms that the substitution falls within a hig
 
 ![UCSC Coverage Case 681](UCSC_Coverage_681.png)
 
+### 5.4 Quantitative Validation (VCF Inspection)
+To provide a final, rigorous confirmation of the *de novo* nature of the variant and the quality of the alignment, the filtered VCF file was interrogated at the exact locus (`chr16:3820696`) using the following UNIX command:
+```bash
+grep "3820696" case_AD_denovo.vcf
+```
+
+**Raw Terminal Output:**
+```text
+chr16   3820696 .       G       A       217.014 .       [...]   GT:DP:AD:RO:QR:AO:QA:GL 
+0/1:23:10,13:10:326:13:430:-31.4708,0,-22.2902     
+0/0:54:54,0:54:1993:0:0:0,-16.2556,-172.882     
+0/0:48:48,0:48:1814:0:0:0,-14.4494,-154.469
+```
+
+**Results and Interpretation:**
+```text
+- Proband (Child): Genotype 0/1, Total Depth (DP) = 23, Allele Depth (AD) = 10,13. 
+  The balanced ratio of reference (G) to alternative (A) alleles confirms a high-quality heterozygous call.
+- Father: Genotype 0/0, DP = 54, AD = 54,0.
+- Mother: Genotype 0/0, DP = 48, AD = 48,0.
+
+CONCLUSION:
+This quantitative data perfectly matches the UCSC visualization: the high DP values in all family members 
+exclude any deletion or sequencing gaps, while the complete absence of the alternative allele in the 
+parents (AD=0) definitively confirms the de novo origin of the mutation.
+```
+
 ## 6. DISCUSSION
 The implementation of this trio-based bioinformatics pipeline successfully differentiated between pathogenic variants and background genetic noise. A critical aspect of the analysis was the identification of systematic sequencing artifacts and high-frequency benign polymorphisms. For instance, recurrent variants in the *IL34* gene were consistently observed across multiple cases but were confidently filtered out due to their high allele frequency (gnomAD AF > 10%). 
 
