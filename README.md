@@ -88,9 +88,11 @@ Joint variant calling was performed for each family trio within the target regio
 ```bash
 freebayes -f universe.fasta -t exons16Padded_sorted.bed child_sorted.bam father_sorted.bam mother_sorted.bam > family_trio.vcf
 ```
+*(Note: This step was repeated for all 5 cases, generating `family610.vcf`, `family586.vcf`, etc.)*
 
 ### 4.4 Mendelian Filtering (bcftools)
 Strict filters were applied to isolate the candidates for each inheritance model:
+
 **Autosomal Recessive (Case 610):**
 ```bash
 bcftools view -i 'QUAL>20 && FORMAT/GT[0]="1/1" && FORMAT/GT[1]="0/1" && FORMAT/GT[2]="0/1"' family610.vcf > case610_AR.vcf
@@ -100,6 +102,7 @@ bcftools view -i 'QUAL>20 && FORMAT/GT[0]="1/1" && FORMAT/GT[1]="0/1" && FORMAT/
 ```bash
 bcftools view -i 'QUAL>20 && FORMAT/GT[0]="0/1" && FORMAT/GT[1]="0/0" && FORMAT/GT[2]="0/0"' family_final.vcf > case_AD_denovo.vcf
 ```
+*(Note: The AD filter was similarly applied to the respective VCF files of cases 586, 657, and 683).*
 
 ## 5. RESULTS
 The clinical bioinformatics pipeline successfully processed and filtered the genomic data for the 5 family trios. The final diagnostic outcomes are summarized in the table below, followed by detailed clinical reports for each individual case.
