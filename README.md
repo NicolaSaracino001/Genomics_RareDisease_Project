@@ -52,10 +52,42 @@ To identify the causal mutation among the candidates, a multi-stage filtering st
 
 Results were exported in tabular format for subsequent bioinformatics analysis and clinical interpretation.
 
-## 4. RESULTS
+## 4. UNIX PIPELINE & COMMAND LOGS
+This section details the exact commands executed in the server environment to ensure the reproducibility of the analysis.
+
+### 4.1 Read Mapping and Processing (Bowtie2 & Samtools)
+For each sample, reads were aligned and converted to sorted BAM files:
+```bash
+# Alignment and SAM to BAM conversion
+bowtie2 -x hg19_index -1 child_R1.fastq -2 child_R2.fastq | samtools view -bS - > child.bam
+
+# Sorting and Indexing
+samtools sort child.bam -o child_sorted.bam
+samtools index child_sorted.bam
+```
+
+### 4.2 Variant Calling (Freebayes)
+Joint variant calling was performed for each family trio within the target regions:
+```bash
+freebayes -f universe.fasta -t exons16Padded_sorted.bed child_sorted.bam father_sorted.bam mother_sorted.bam > family_trio.vcf
+```
+
+### 4.3 Mendelian Filtering (bcftools)
+Strict filters were applied to isolate the candidates for each inheritance model:
+**Autosomal Recessive (Case 610):**
+```bash
+bcftools view -i 'QUAL>20 && FORMAT/GT[0]="1/1" && FORMAT/GT[1]="0/1" && FORMAT/GT[2]="0/1"' family610.vcf > case610_AR.vcf
+```
+
+**Autosomal Dominant / De Novo (Cases 586, 657, 681, 683):**
+```bash
+bcftools view -i 'QUAL>20 && FORMAT/GT[0]="0/1" && FORMAT/GT[1]="0/0" && FORMAT/GT[2]="0/0"' family_final.vcf > case_AD_denovo.vcf
+```
+
+## 5. RESULTS
 The clinical bioinformatics pipeline successfully processed and filtered the genomic data for the 5 family trios. The final diagnostic outcomes are summarized in the table below, followed by detailed clinical reports for each individual case.
 
-### 4.1 Summary of Findings
+### 5.1 Summary of Findings
 
 | Case ID | Inheritance Model | Mutated Gene | Variant Location | Consequence | Clinical Phenotype | Final Diagnosis |
 |---------|-------------------|--------------|------------------|-------------|--------------------|-----------------|
@@ -65,7 +97,7 @@ The clinical bioinformatics pipeline successfully processed and filtered the gen
 | **681** | Autosomal Dominant | *CREBBP* | 16:3820696 | Stop Gained | Rubinstein-Taybi Syndrome | **Rubinstein-Taybi Syndrome** |
 | **683** | Autosomal Dominant | *PRSS41* | - | - | None (-) | **Healthy** (Benign *de novo* variant) |
 
-### 4.2 Detailed Clinical Reports
+### 5.2 Detailed Clinical Reports
 
 **Case 610**
 Case 610 was determined not to be associated with any genetic disease. Following the Autosomal Recessive (AR) filtering model (proband 1/1, parents 0/1), no variants passed the stringent clinical criteria regarding population frequency, functional impact, and known pathological phenotypes. The patient is considered clinically healthy.
@@ -82,20 +114,20 @@ Case 681 was determined to be associated with Rubinstein-Taybi syndrome. The gen
 **Case 683**
 Case 683 was determined not to be associated with any genetic disease. The analysis of the trio identified a *de novo* variant in the *PRSS41* gene. However, a review of clinical databases revealed an absence of any known phenotype or disease association for this gene. Additional variants detected in genes like *IL34* and *TMC5* were discarded as systematic sequencing artifacts and high-frequency benign polymorphisms. The patient is clinically healthy.
 
-## 5. DISCUSSION
+## 6. DISCUSSION
 The implementation of this trio-based bioinformatics pipeline successfully differentiated between pathogenic variants and background genetic noise. A critical aspect of the analysis was the identification of systematic sequencing artifacts and high-frequency benign polymorphisms. For instance, recurrent variants in the *IL34* gene were consistently observed across multiple cases but were confidently filtered out due to their high allele frequency (gnomAD AF > 10%). 
 
 Furthermore, the analysis highlighted the critical importance of phenotype correlation. The identification of *de novo* high-impact variants (e.g., frameshifts) in genes such as *TMC5* and *PRSS41* initially suggested potential pathogenicity. However, the lack of associated clinical phenotypes in databases like OMIM and ClinVar correctly reclassified them as benign *de novo* events. This demonstrates the necessity of integrating mathematical variant filtering with functional and clinical database cross-referencing.
 
 The successful diagnosis of Familial Cylindromatosis (*CYLD*) and Rubinstein-Taybi Syndrome (*CREBBP*) underscores the effectiveness of filtering for *de novo* mutations in Autosomal Dominant models when supported by strong clinical annotations.
 
-## 6. DATA AVAILABILITY
+## 7. DATA AVAILABILITY
 The scripts, configuration files, and the complete step-by-step pipeline used for this analysis are tracked and available in the GitHub repository. Large intermediate raw files (e.g., FASTQ, BAM, VCF) are strictly excluded via `.gitignore` to maintain repository efficiency.
 
-## 7. CONCLUSION
+## 8. CONCLUSION
 This project successfully achieved its objective of performing molecular diagnoses of rare Mendelian disorders using WES trio analysis. By applying rigorous filtering strategies based on Mendelian inheritance patterns, functional impact, population frequency, and clinical phenotypes, a definitive molecular diagnosis was established for 2 out of the 5 analyzed cases. The remaining 3 cases were classified as clinically healthy, proving the pipeline's robustness against false-positive associations and its reliability in a clinical diagnostic setting.
 
-## 8. LITERATURE CITED
+## 9. LITERATURE CITED
 1. McLaren, W., et al. (2016). The Ensembl Variant Effect Predictor. *Genome Biology*, 17(1), 122.
 2. Karczewski, K. J., et al. (2020). The mutational constraint spectrum quantified from variation in 141,456 humans. *Nature*, 581(7809), 434-443.
 3. Landrum, M. J., et al. (2018). ClinVar: improving access to variant interpretations and supporting evidence. *Nucleic Acids Research*, 46(D1), D1062-D1067.
