@@ -142,8 +142,6 @@ Furthermore, the visualization confirms that the substitution falls within a hig
 
 ![UCSC Coverage Case 681](UCSC_Coverage_681.png)
 
-
-
 ## 6. DISCUSSION
 The implementation of this trio-based bioinformatics pipeline successfully differentiated between pathogenic variants and background genetic noise. A critical aspect of the analysis was the identification of systematic sequencing artifacts and high-frequency benign polymorphisms. For instance, recurrent variants in the *IL34* gene were consistently observed across multiple cases but were confidently filtered out due to their high allele frequency (gnomAD AF > 10%). 
 
