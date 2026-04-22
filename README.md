@@ -59,7 +59,7 @@ This section details the exact commands executed in the server environment to en
 Reads for the proband, father, and mother were individually aligned and converted to sorted BAM files:
 
 ```bash
-# 1. Child (Proband) Processing
+# 1. Child Processing
 bowtie2 -x hg19_index -1 child_R1.fastq -2 child_R2.fastq | samtools view -bS - > child.bam
 samtools sort child.bam -o child_sorted.bam
 samtools index child_sorted.bam
@@ -73,14 +73,23 @@ samtools index father_sorted.bam
 bowtie2 -x hg19_index -1 mother_R1.fastq -2 mother_R2.fastq | samtools view -bS - > mother.bam
 samtools sort mother.bam -o mother_sorted.bam
 samtools index mother_sorted.bam
+```
 
-### 4.2 Variant Calling (Freebayes)
+### 4.2 Coverage Track Generation (bedtools)
+To visualize the alignment coverage in the UCSC Genome Browser, sorted BAM files for Case 681 were converted into lightweight bedgraph format computing the coverage profiles:
+```bash
+bedtools genomecov -ibam child_sorted.bam -bg -trackline -trackopts 'name="child_681"' -max 100 > childCov_681.bg
+bedtools genomecov -ibam father_sorted.bam -bg -trackline -trackopts 'name="father_681"' -max 100 > fatherCov_681.bg
+bedtools genomecov -ibam mother_sorted.bam -bg -trackline -trackopts 'name="mother_681"' -max 100 > motherCov_681.bg
+```
+
+### 4.3 Variant Calling (Freebayes)
 Joint variant calling was performed for each family trio within the target regions:
 ```bash
 freebayes -f universe.fasta -t exons16Padded_sorted.bed child_sorted.bam father_sorted.bam mother_sorted.bam > family_trio.vcf
 ```
 
-### 4.3 Mendelian Filtering (bcftools)
+### 4.4 Mendelian Filtering (bcftools)
 Strict filters were applied to isolate the candidates for each inheritance model:
 **Autosomal Recessive (Case 610):**
 ```bash
