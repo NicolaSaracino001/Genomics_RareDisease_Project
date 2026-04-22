@@ -134,12 +134,15 @@ Case 683 was determined not to be associated with any genetic disease. The analy
 ### 5.3 Genomic Visualization (UCSC Genome Browser)
 To visually validate the identified pathogenic variant in Case 681 (*CREBBP*), the alignment coverage was inspected using the UCSC Genome Browser (hg19 assembly). 
 
-The sorted BAM files of the family trio were first converted into lightweight bedgraph format (`.bg`) using `bedtools genomecov` and subsequently uploaded as Custom Tracks. 
-The visualization was scaled to a ~200 bp genomic window (`chr16:3,820,600-3,820,800`) centered around the *de novo* stop_gained mutation (`chr16:3820696`). 
+A custom annotation track (BED format) was explicitly created to precisely pinpoint the exact locus of the *de novo* stop_gained mutation (`chr16:3820696`). Additionally, the sorted BAM files of the family trio were converted into lightweight bedgraph format (`.bg`) using `bedtools genomecov` and uploaded as coverage tracks. 
 
-This specific configuration allows for a direct visual comparison of the read depth across the proband, father, and mother. Furthermore, it confirms that the mutation falls within a highly conserved coding exon, as demonstrated by the multiz alignments of vertebrate species.
+The visualization was scaled to a ~200 bp genomic window (`chr16:3,820,600-3,820,800`). As clearly visible in the generated profiles, there is no drop in read depth (no "valleys" or missing coverage) at the mutation site in the proband compared to the parents. This continuous and robust coverage is expected, as the *CREBBP* mutation is a Single Nucleotide Variant (SNV) rather than a deletion. The high read depth at this specific locus strongly supports the reliability and high quality of the variant call.
 
-![UCSC Coverage Case 681](UCSC_Coverage_681.png)
+Furthermore, the visualization confirms that the substitution falls within a highly conserved coding exon, as demonstrated by the multiz alignments of vertebrate species.
+
+![UCSC Coverage Case 681](UCSC_Coverage_Case681.png)
+
+
 
 ## 6. DISCUSSION
 The implementation of this trio-based bioinformatics pipeline successfully differentiated between pathogenic variants and background genetic noise. A critical aspect of the analysis was the identification of systematic sequencing artifacts and high-frequency benign polymorphisms. For instance, recurrent variants in the *IL34* gene were consistently observed across multiple cases but were confidently filtered out due to their high allele frequency (gnomAD AF > 10%). 
