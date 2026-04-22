@@ -131,6 +131,16 @@ Case 681 was determined to be associated with Rubinstein-Taybi syndrome. The gen
 **Case 683**
 Case 683 was determined not to be associated with any genetic disease. The analysis of the trio identified a *de novo* variant in the *PRSS41* gene. However, a review of clinical databases revealed an absence of any known phenotype or disease association for this gene. Additional variants detected in genes like *IL34* and *TMC5* were discarded as systematic sequencing artifacts and high-frequency benign polymorphisms. The patient is clinically healthy.
 
+### 5.3 Genomic Visualization (UCSC Genome Browser)
+To visually validate the identified pathogenic variant in Case 681 (*CREBBP*), the alignment coverage was inspected using the UCSC Genome Browser (hg19 assembly). 
+
+The sorted BAM files of the family trio were first converted into lightweight bedgraph format (`.bg`) using `bedtools genomecov` and subsequently uploaded as Custom Tracks. 
+The visualization was scaled to a ~200 bp genomic window (`chr16:3,820,600-3,820,800`) centered around the *de novo* stop_gained mutation (`chr16:3820696`). 
+
+This specific configuration allows for a direct visual comparison of the read depth across the proband, father, and mother. Furthermore, it confirms that the mutation falls within a highly conserved coding exon, as demonstrated by the multiz alignments of vertebrate species.
+
+![UCSC Coverage Case 681](UCSC_Coverage_681.png)
+
 ## 6. DISCUSSION
 The implementation of this trio-based bioinformatics pipeline successfully differentiated between pathogenic variants and background genetic noise. A critical aspect of the analysis was the identification of systematic sequencing artifacts and high-frequency benign polymorphisms. For instance, recurrent variants in the *IL34* gene were consistently observed across multiple cases but were confidently filtered out due to their high allele frequency (gnomAD AF > 10%). 
 
